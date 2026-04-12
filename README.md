@@ -79,6 +79,18 @@ python-learning-lab/
 <!-- AUTO:sliding-window -->
 | # | File |
 |---|---|
+| 1 | `Fruits into Baskets .py` |
+| 2 | `LC 1004..py` |
+| 3 | `LC121.py` |
+| 4 | `LC3661.py` |
+| 5 | `LC424.py` |
+| 6 | `LC72.py` |
+| 7 | `LC76.py` |
+| 8 | `Longest Substring with K Distinct Character.py` |
+| 9 | `No-repeat Substring.py` |
+| 10 | `minimum_size_subarray.py` |
+
+> **10 problems** · Pattern: Expand right → shrink left → O(n)
 <!-- END:sliding-window -->
 
 </details>
@@ -91,6 +103,16 @@ python-learning-lab/
 <!-- AUTO:slow-fast -->
 | # | File |
 |---|---|
+| 1 | ` lc876.py` |
+| 2 | `lc 141.py` |
+| 3 | `lc 143.py` |
+| 4 | `lc 202 .py` |
+| 5 | `lc 234 .py` |
+| 6 | `lc 287.py` |
+| 7 | `lc142.py` |
+| 8 | `lc457.py` |
+
+> **8 problems** · Pattern: Two pointers at different speeds.
 <!-- END:slow-fast -->
 
 </details>
@@ -103,6 +125,12 @@ python-learning-lab/
 <!-- AUTO:kadane -->
 | # | File |
 |---|---|
+| 1 | `53. Maximum Subarray.py` |
+| 2 | `LC 1186. Maximum Subarray Sum with One Deletion.py` |
+| 3 | `LC 152. Maximum Product Subarray.py` |
+| 4 | `Minmum SUbarray.py` |
+
+> **4 problems** · Core: `current = max(arr[i], current + arr[i])`
 <!-- END:kadane -->
 
 </details>
@@ -115,6 +143,12 @@ python-learning-lab/
 <!-- AUTO:prefix-sum -->
 | # | File |
 |---|---|
+| 1 | `974. Subarray Sums Divisible by K.PY` |
+| 2 | `LC 525.py` |
+| 3 | `pivot.py` |
+| 4 | `subarray_sum_equal _k.py` |
+
+> **4 problems** · Pattern: `prefix[i] = prefix[i-1] + arr[i]`
 <!-- END:prefix-sum -->
 
 </details>
@@ -150,6 +184,15 @@ python-learning-lab/
 <!-- AUTO:python-core -->
 | Module | Files |
 |---|---|
+| **Python Core Fundamentals** | `comprehensions.py` · `control_flow.py` · `functions.py` · `input_output_comments_docstrings.py` · `lambda_functions.py` · `syntax_indentation_pep8.py` · `variable&simple_datatype.py` |
+| **Object-Oriented Programming (OOP)** | `Classes and objects.py` · `abstraction.py` · `encapsulation.py` · `inheritance.py` · `polymorphism.py` · `special_methods.py` |
+| **Built-in Data Structures** | `Dictionaries.py` · `Sets.py` · `Tuples.py` · `lists.py` |
+| **Pythonic Thinking** | `Iterators and generators.py` |
+| **File Handling & Serialization** | `Binary files & Pickle.py` · `CSV handling.py` · `JSON handling.py` · `Practice Questions.py` · `writing text files.py` |
+| **Error Handling & Debugging** | `exceptions_try_except.py` |
+| **Data Analysis & Manipulation** | `Pandas.py` |
+| **Numerical Computing** | `NumPy.py` |
+| **Modules & Environments** | `import system .py` |
 <!-- END:python-core -->
 
 ---
@@ -196,6 +239,20 @@ python-learning-lab/
 <!-- AUTO:progress -->
 | Module | Files | Status |
 |---|---|---|
+| Sliding Window | 10 | ✅ Complete (10 files) |
+| Slow & Fast Pointer | 8 | ✅ Complete (8 files) |
+| Kadane's Algorithm | 4 | ✅ Complete (4 files) |
+| Prefix Sum | 3 | ✅ Complete (3 files) |
+| Two Pointer | 0 | ⬜ Not Started |
+| Algorithms | 0 | ⬜ Not Started |
+| Python Core | 7 | ✅ Complete (7 files) |
+| OOP | 6 | ✅ Complete (6 files) |
+| Built-in DS | 4 | ✅ Complete (4 files) |
+| File Handling | 5 | ✅ Complete (5 files) |
+| Error Handling | 1 | ✅ Complete (1 files) |
+| Data Analysis | 1 | ✅ Complete (1 files) |
+| Numerical Computing | 1 | ✅ Complete (1 files) |
+| Visualization | 4 | ✅ Complete (4 files) |
 <!-- END:progress -->
 
 ---
