@@ -110,6 +110,67 @@ def build_dsa_prefix() -> str:
     return "\n".join(rows)
 
 
+def build_dsa_two_pointer() -> str:
+    folder = ROOT / "data_structure/pattern/two_pointer"
+    files = list_py_files(folder)
+    if not files:
+        return "_No files yet — coming soon._"
+    rows = ["| # | File |", "|---|---|"]  
+    for i, f in enumerate(files, 1):
+        rows.append(f"| {i} | `{f}` |")
+    rows.append(f"\n> **{len(files)} problems**")
+    return "\n".join(rows)
+
+
+def build_basic_ds() -> str:
+    folder = ROOT / "data_structure/basic_ds"
+    files = list_py_files(folder)
+    if not files:
+        return "_No files yet._"
+    rows = ["| # | File |", "|---|---|"]  
+    for i, f in enumerate(files, 1):
+        rows.append(f"| {i} | `{f}` |")
+    return "\n".join(rows)
+
+
+def build_visualization() -> str:
+    base = ROOT / "virtualization"
+    sections = [
+        ("Matplotlib",        "virtualization/Matplotlib"),
+        ("Seaborn",           "virtualization/Seaborn"),
+        ("Plot types for EDA","virtualization/Plot types for EDA"),
+        ("Standard Library",  "virtualization/Standard Library"),
+    ]
+    rows = ["| Library | Files |", "|---|---|"]  
+    for name, rel in sections:
+        path = ROOT / rel
+        files = list_py_files(path) if path.exists() else []
+        file_str = " · ".join(f"`{f}`" for f in files) if files else "_empty_"
+        rows.append(f"| **{name}** | {file_str} |")
+    return "\n".join(rows)
+
+
+def build_genai() -> str:
+    base = ROOT / "GenAi"
+    if not base.exists():
+        return "_No files yet._"
+    sections = [
+        ("Chat Models",    "GenAi/models/Chat_models"),
+        ("Embedded Models","GenAi/models/EmbeddedModels"),
+        ("LLMs",           "GenAi/models/LLMs"),
+        ("Prompts",        "GenAi/prompts"),
+        ("Basic",          "GenAi/Basic"),
+        ("Structured Output", "GenAi/structured-op"),
+    ]
+    rows = ["| Module | Files |", "|---|---|"]  
+    for name, rel in sections:
+        path = ROOT / rel
+        files = list_py_files(path) if path.exists() else []
+        file_str = " · ".join(f"`{f}`" for f in files) if files else "_empty_"
+        rows.append(f"| **{name}** | {file_str} |")
+    return "\n".join(rows)
+
+
 def build_python_core() -> str:
     base = ROOT / "python"
     sections = [
@@ -143,6 +204,10 @@ def main():
     content = replace_section(content, "slow-fast",        build_dsa_slow_fast())
     content = replace_section(content, "kadane",           build_dsa_kadane())
     content = replace_section(content, "prefix-sum",       build_dsa_prefix())
+    content = replace_section(content, "two-pointer",      build_dsa_two_pointer())
+    content = replace_section(content, "basic-ds",         build_basic_ds())
+    content = replace_section(content, "visualization",    build_visualization())
+    content = replace_section(content, "genai",            build_genai())
     content = replace_section(content, "python-core",      build_python_core())
 
     readme.write_text(content, encoding="utf-8")

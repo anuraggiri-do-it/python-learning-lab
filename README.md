@@ -120,14 +120,26 @@ python-learning-lab/
 </details>
 
 <details>
+<summary><b>🔁 Two Pointer</b></summary>
+
+<br/>
+
+<!-- AUTO:two-pointer -->
+| # | File |
+|---|---|
+<!-- END:two-pointer -->
+
+</details>
+
+<details>
 <summary><b>🔗 Basic Data Structures</b></summary>
 
 <br/>
 
-| Structure | File | Highlights |
-|---|---|---|
-| Array (`array` module) | `array.py` | Typed, contiguous memory, full CRUD + complexity notes |
-| Linked List | `Linkedlist.py` | Node class, append/prepend/delete/search/reverse/display |
+<!-- AUTO:basic-ds -->
+| # | File |
+|---|---|
+<!-- END:basic-ds -->
 
 </details>
 
@@ -144,21 +156,10 @@ python-learning-lab/
 
 ## 🤖 Gen AI with LangChain
 
-```
-GenAi/
-├── models/
-│   ├── Chat_models/     ← ChatOllama (llama3.2:1b)
-│   ├── EmbeddedModels/  ← HuggingFace sentence-transformers
-│   └── LLMs/            ← LLM demo notebook
-├── prompts/
-│   ├── Static & Dynamic prompts
-│   ├── PromptTemplate & ChatPromptTemplate
-│   ├── MessagesPlaceholder
-│   ├── langchain_prompts.drawio
-│   └── langchain_prompts.svg
-├── Basic/               ← LangChain architecture diagram (SVG)
-└── structured-op/       ← (in progress)
-```
+<!-- AUTO:genai -->
+| Module | Files |
+|---|---|
+<!-- END:genai -->
 
 > Running a **local LLM** (llama3.2:1b via Ollama) + **HuggingFace embeddings** — no API keys needed.
 
@@ -166,13 +167,10 @@ GenAi/
 
 ## 📊 Visualization
 
-```
-virtualization/
-├── Matplotlib/          ← bar.py
-├── Seaborn/             ← anslysis.py
-├── Plot types for EDA/  ← mean.py (distributions, mean plots)
-└── Standard Library/    ← utils.py
-```
+<!-- AUTO:visualization -->
+| Library | Files |
+|---|---|
+<!-- END:visualization -->
 
 ---
 
