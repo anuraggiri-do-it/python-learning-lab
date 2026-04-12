@@ -1,0 +1,143 @@
+Kadane's Algorithm — Deep Pattern Breakdown
+
+Step 1: What Problem Is Kadane's Actually Solving?
+
+Before the algorithm, understand the core tension:
+
+Given an array, at every position you face a binary decision:
+"Do I extend the existing subarray, or start fresh from here?"
+
+That's it. Kadane's is just a disciplined answer to that one question, repeated across the array.
+
+─────────────────────────────────────────────────────────────
+
+Step 2: The Pattern Detection Signal
+
+How do you recognize a problem as Kadane-applicable?
+It always has these markers:
+
+The 4-signal detection checklist:
+
+  1. The array has both positive and negative values
+     (or the problem implicitly has "good" and "bad" contributions)
+  2. You're asked for a contiguous subarray / substructure — not any subset
+  3. The objective is max or min of a cumulative sum over that subarray
+  4. The "carry forward or restart" tension exists
+
+If all 4 are true → Kadane's (or a Kadane's variant).
+
+─────────────────────────────────────────────────────────────
+
+Step 3: The Boilerplate — Universal Template
+
+Here's the pattern distilled into its most reusable form:
+
+    def kadane(arr):
+        # INITIALIZATION
+        current_sum = arr[0]   # "what's my best subarray ending HERE"
+        global_max  = arr[0]   # "what's the best I've ever seen"
+
+        # CORE LOOP
+        for i in range(1, len(arr)):
+            # THE ONE DECISION: extend or restart?
+            current_sum = max(arr[i], current_sum + arr[i])
+
+            # Track global best
+            global_max = max(global_max, current_sum)
+
+        return global_max
+
+Why arr[0] and not 0 for initialization?
+Because if all elements are negative (e.g., [-3, -1, -5]),
+the answer is -1, not 0.
+Initializing with 0 would wrongly return 0.
+
+─────────────────────────────────────────────────────────────
+
+Step 4: Visualizing the State Trace
+
+arr = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+
+  i   arr[i]   current_sum              global_max
+  ─   ──────   ─────────────────────    ──────────
+  0    -2      -2                        -2
+  1     1      max(1, -2+1)  = 1          1
+  2    -3      max(-3, 1-3)  = -2         1
+  3     4      max(4, -2+4)  = 4          4
+  4    -1      max(-1, 4-1)  = 3          4
+  5     2      max(2, 3+2)   = 5          5
+  6     1      max(1, 5+1)   = 6          6  ✅
+  7    -5      max(-5, 6-5)  = 1          6
+  8     4      max(4, 1+4)   = 5          6
+
+Answer = 6  (subarray [4, -1, 2, 1])
+
+─────────────────────────────────────────────────────────────
+
+Step 5: The Generalized Pattern — Kadane's Variants
+
+The core pattern is:
+"carry a local state forward, reset it when it's better to start fresh,
+track the global best."
+
+That generalizes to:
+
+  ┌─────────────────────────────────────────────────────────┐
+  │  local_state = f(local_state, element)  OR  fresh_start │
+  │  global_best = max(global_best, local_state)            │
+  └─────────────────────────────────────────────────────────┘
+
+  Problem variant               What changes
+  ──────────────────────────    ──────────────────────────────────────────
+  Max subarray sum              classic: curr = max(e, curr + e)
+  Min subarray sum              flip max→min: curr = min(e, curr + e)
+  Max subarray product          track both max AND min (negatives flip sign)
+  Max sum with k-length limit   add a sliding window cap
+  2D max subarray (matrix)      compress rows, run Kadane on column prefix sums
+
+─────────────────────────────────────────────────────────────
+
+Step 6: The Boilerplate You Should Memorize
+
+3 lines are non-negotiable in every Kadane's problem:
+
+    # Line 1: Initialize with first element (NOT zero)
+    current = arr[0]; best = arr[0]
+
+    # Line 2: The ONE decision per element
+    current = max(arr[i], current + arr[i])
+
+    # Line 3: Track global best
+    best = max(best, current)
+
+Common extensions you bolt on:
+
+    # If you need the actual subarray (not just the value):
+    start = end = temp_start = 0
+    # When you restart (curr < arr[i]):  temp_start = i
+    # When you update best:              start = temp_start; end = i
+
+    # If all elements could be negative — already handled by arr[0] init.
+
+    # If empty subarray is valid (answer can be 0):
+    current = max(0, current + arr[i])   # swap arr[0] init → 0
+    best = max(0, best)
+
+─────────────────────────────────────────────────────────────
+
+The Pattern Card (Your Reusable Mental Model)
+
+  Kadane's = "greedy local optimism with a global memory"
+
+  At each step, ask: "Is my past a burden or a benefit?"
+    If burden  → abandon it.
+    If benefit → carry it.
+  Never lose track of the best you've ever seen.
+
+This is precisely the same intuition that appears in:
+  - Stock buy/sell
+  - Trapping rain water variants
+  - Circular subarray sum
+
+All are Kadane cousins.
+Recognize the tension → apply the template → adapt the reset condition.
