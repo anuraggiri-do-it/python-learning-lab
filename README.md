@@ -72,78 +72,50 @@ python-learning-lab/
 ## 🧩 Data Structures & Algorithms
 
 <details>
-<summary><b>🪟 Sliding Window</b> — 10 problems</summary>
+<summary><b>🪟 Sliding Window</b></summary>
 
 <br/>
 
-| Problem | File | Complexity |
-|---|---|---|
-| Minimum Size Subarray Sum | `minimum_size_subarray.py` | O(n) / O(1) |
-| No-repeat Substring (LC 3) | `No-repeat Substring.py` | O(n) / O(k) |
-| Longest Substring K Distinct | `Longest Substring with K Distinct Character.py` | O(n) / O(k) |
-| Fruits into Baskets | `Fruits into Baskets .py` | O(n) / O(1) |
-| LC 424 — Longest Repeating Char Replacement | `LC424.py` | O(n) / O(1) |
-| LC 1004 — Max Consecutive Ones III | `LC 1004..py` | O(n) / O(1) |
-| LC 121 — Best Time to Buy and Sell Stock | `LC121.py` | O(n) / O(1) |
-| LC 72 — Edit Distance | `LC72.py` | O(m×n) / O(m×n) |
-| LC 76 — Minimum Window Substring | `LC76.py` | O(n) / O(k) |
-| LC 3661 | `LC3661.py` | — |
-
-> **Pattern:** Expand right → shrink left when condition is met. Each element is touched at most twice → O(n).
+<!-- AUTO:sliding-window -->
+| # | File |
+|---|---|
+<!-- END:sliding-window -->
 
 </details>
 
 <details>
-<summary><b>🐢🐇 Slow & Fast Pointer</b> — 8 problems</summary>
+<summary><b>🐢🐇 Slow & Fast Pointer</b></summary>
 
 <br/>
 
-| Problem | File |
+<!-- AUTO:slow-fast -->
+| # | File |
 |---|---|
-| LC 141 — Linked List Cycle | `lc 141.py` |
-| LC 142 — Linked List Cycle II | `lc142.py` |
-| LC 143 — Reorder List | `lc 143.py` |
-| LC 202 — Happy Number | `lc 202 .py` |
-| LC 234 — Palindrome Linked List | `lc 234 .py` |
-| LC 287 — Find the Duplicate Number | `lc 287.py` |
-| LC 457 — Circular Array Loop | `lc457.py` |
-| LC 876 — Middle of Linked List | `lc876.py` |
-
-> **Pattern:** Two pointers at different speeds — fast catches slow when a cycle exists, or fast reaches end when it doesn't.
+<!-- END:slow-fast -->
 
 </details>
 
 <details>
-<summary><b>📈 Kadane's Algorithm</b> — 5 problems</summary>
+<summary><b>📈 Kadane's Algorithm</b></summary>
 
 <br/>
 
-| Problem | File |
+<!-- AUTO:kadane -->
+| # | File |
 |---|---|
-| LC 53 — Maximum Subarray | `53. Maximum Subarray.py` |
-| LC 152 — Maximum Product Subarray | `LC 152. Maximum Product Subarray.py` |
-| LC 1186 — Max Subarray Sum with One Deletion | `LC 1186. Maximum Subarray Sum with One Deletion.py` |
-| Minimum Subarray | `Minmum SUbarray.py` |
-| Pattern Deep-Dive Notes | `readme` |
-
-> **Core decision:** `current = max(arr[i], current + arr[i])` — extend or restart?  
-> **Mental model:** *"Greedy local optimism with a global memory."*
+<!-- END:kadane -->
 
 </details>
 
 <details>
-<summary><b>➕ Prefix Sum</b> — 4 problems</summary>
+<summary><b>➕ Prefix Sum</b></summary>
 
 <br/>
 
-| Problem | File |
+<!-- AUTO:prefix-sum -->
+| # | File |
 |---|---|
-| Subarray Sum Equals K | `subarray_sum_equal _k.py` |
-| LC 525 — Contiguous Array | `LC 525.py` |
-| 974 — Subarray Sums Divisible by K | `974. Subarray Sums Divisible by K.PY` |
-| Pivot Index | `pivot.py` |
-
-> **Pattern:** `prefix[i] = prefix[i-1] + arr[i]` — convert range-sum queries to O(1) lookups.
+<!-- END:prefix-sum -->
 
 </details>
 
@@ -163,85 +135,10 @@ python-learning-lab/
 
 ## 🐍 Python Core
 
-<details>
-<summary><b>Python Core Fundamentals</b></summary>
-
-<br/>
-
-| Topic | File |
+<!-- AUTO:python-core -->
+| Module | Files |
 |---|---|
-| Variables & Data Types | `variable&simple_datatype.py` |
-| Control Flow | `control_flow.py` |
-| Functions — args, kwargs, recursion, type hints | `functions.py` |
-| Comprehensions | `comprehensions.py` |
-| Lambda Functions | `lambda_functions.py` |
-| I/O, Comments, Docstrings | `input_output_comments_docstrings.py` |
-| Syntax, Indentation, PEP8 | `syntax_indentation_pep8.py` |
-
-</details>
-
-<details>
-<summary><b>Object-Oriented Programming (OOP)</b> — Tea Analogy 🍵</summary>
-
-<br/>
-
-> *Class = Recipe. Object = A cup of tea made from that recipe.*
-
-| Concept | File |
-|---|---|
-| Classes & Objects | `Classes and objects.py` |
-| Inheritance | `inheritance.py` |
-| Encapsulation | `encapsulation.py` |
-| Polymorphism | `polymorphism.py` |
-| Abstraction | `abstraction.py` |
-| Special / Dunder Methods | `special_methods.py` |
-
-</details>
-
-<details>
-<summary><b>Built-in Data Structures</b></summary>
-
-<br/>
-
-`lists.py` · `Dictionaries.py` · `Sets.py` · `Tuples.py`
-
-</details>
-
-<details>
-<summary><b>Pythonic Thinking</b></summary>
-
-<br/>
-
-`Iterators and generators.py`
-
-</details>
-
-<details>
-<summary><b>File Handling & Serialization</b></summary>
-
-<br/>
-
-`Reading/writing text files.py` · `CSV handling.py` · `JSON handling.py` · `Binary files & Pickle.py` · `Practice Questions.py`
-
-</details>
-
-<details>
-<summary><b>Error Handling & Debugging</b></summary>
-
-<br/>
-
-`exceptions_try_except.py` — try/except/else/finally, raising exceptions, custom exception classes.
-
-</details>
-
-<details>
-<summary><b>Data Analysis & Numerical Computing</b></summary>
-
-<br/>
-
-`Pandas.py` · `NumPy.py` · `import system .py`
-
-</details>
+<!-- END:python-core -->
 
 ---
 
@@ -298,18 +195,10 @@ virtualization/
 
 ## 📈 Progress
 
-| Module | Status |
-|---|---|
-| Sliding Window | ✅ Complete |
-| Slow & Fast Pointer | ✅ Complete |
-| Kadane's Algorithm | ✅ Complete |
-| Prefix Sum | ✅ Complete |
-| Two Pointer | 🔄 In Progress |
-| Algorithms | 🔄 In Progress |
-| Python Core | ✅ Complete |
-| OOP | ✅ Complete |
-| Gen AI / LangChain | 🔄 In Progress |
-| Visualization | ✅ Complete |
+<!-- AUTO:progress -->
+| Module | Files | Status |
+|---|---|---|
+<!-- END:progress -->
 
 ---
 
