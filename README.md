@@ -159,8 +159,7 @@ python-learning-lab/
 <br/>
 
 <!-- AUTO:two-pointer -->
-| # | File |
-|---|---|
+_No files yet — coming soon._
 <!-- END:two-pointer -->
 
 </details>
@@ -173,6 +172,8 @@ python-learning-lab/
 <!-- AUTO:basic-ds -->
 | # | File |
 |---|---|
+| 1 | `Linkedlist.py` |
+| 2 | `array.py` |
 <!-- END:basic-ds -->
 
 </details>
@@ -200,8 +201,7 @@ python-learning-lab/
 ## 🤖 Gen AI with LangChain
 
 <!-- AUTO:genai -->
-| Module | Files |
-|---|---|
+_No files yet._
 <!-- END:genai -->
 
 > Running a **local LLM** (llama3.2:1b via Ollama) + **HuggingFace embeddings** — no API keys needed.
@@ -213,6 +213,10 @@ python-learning-lab/
 <!-- AUTO:visualization -->
 | Library | Files |
 |---|---|
+| **Matplotlib** | `bar.py` |
+| **Seaborn** | `anslysis.py` |
+| **Plot types for EDA** | `mean.py` |
+| **Standard Library** | `utils.py` |
 <!-- END:visualization -->
 
 ---
