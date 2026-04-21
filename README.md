@@ -174,6 +174,7 @@ _No files yet — coming soon._
 |---|---|
 | 1 | `Linkedlist.py` |
 | 2 | `array.py` |
+| 3 | `stack.py` |
 <!-- END:basic-ds -->
 
 </details>
