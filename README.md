@@ -247,7 +247,7 @@ _No files yet._
 | Sliding Window | 10 | ✅ Complete (10 files) |
 | Slow & Fast Pointer | 8 | ✅ Complete (8 files) |
 | Kadane's Algorithm | 4 | ✅ Complete (4 files) |
-| Prefix Sum | 3 | ✅ Complete (3 files) |
+| Prefix Sum | 4 | ✅ Complete (4 files) |
 | Two Pointer | 0 | ⬜ Not Started |
 | Algorithms | 0 | ⬜ Not Started |
 | Python Core | 7 | ✅ Complete (7 files) |
