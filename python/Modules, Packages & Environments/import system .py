@@ -30,7 +30,7 @@
 import math
 
 print(math.pi)           # 3.14159...
-print(math.sqrt(16))     # 4.0
+print(math.sqrt(16))     # 4.0             
 print(math.factorial(5)) # 120
 
 # ── style 2: import specific names ───────────────────────────
@@ -43,7 +43,7 @@ print(floor(3.9))        # 3
 # ── style 3: import with alias ───────────────────────────────
 import numpy as np                  # industry standard alias
 import pandas as pd                 # industry standard alias
-import matplotlib.pyplot as plt     # industry standard alias
+import matplotlib.pyplot as plt             # industry standard alias
 
 # alias shortens long names you type repeatedly
 # np.array() instead of numpy.array()
@@ -61,7 +61,7 @@ print(now)               # current date and time
 
 
 # ═══════════════════════════════════════════════════════════════
-# PART 2: HOW PYTHON FINDS MODULES (sys.path)
+# PART 2: HOW  PYTHON FINDS MODULES (sys.path)
 # ═══════════════════════════════════════════════════════════════
 #
 # When you write `import something`, Python searches in order:
