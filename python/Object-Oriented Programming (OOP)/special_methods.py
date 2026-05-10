@@ -1,104 +1,391 @@
-# ============================================================
-# OOP 6 — Special Methods, Class Methods, Static Methods
-# ============================================================
-# ANALOGY: THE TEA SHOP SYSTEM
+# ═══════════════════════════════════════════════════════════════
+#         OOP — SPECIAL METHODS, CLASS & STATIC METHODS
+# ═══════════════════════════════════════════════════════════════
 #
-#   __str__       = the label on the cup  ("Masala Tea, 2 sugars")
-#   __repr__      = the shop's internal record  (for debugging)
-#   __eq__        = are two cups the same recipe?
-#   __add__       = blend two teas together
-#   @classmethod  = shop-level action (affects all cups / the shop itself)
-#   @staticmethod = general tea knowledge (no cup or shop needed)
+# WHAT ARE SPECIAL METHODS (DUNDERS)?
+# ─────────────────────────────────────────────────────────────
+# Special methods = methods with double underscores on both sides.
+# Also called "dunder" methods (double-under).
+# They let your class integrate with Python's built-in behaviour.
 #
-# ============================================================
+# ANALOGY: Electrical sockets 🔌
+#   Python has standard sockets: print(), len(), +, ==, [], in
+#   Dunder methods = your class's plug shape
+#   Implement the right dunder → your class works with that socket
 
-class Tea:
-    total_cups = 0                     # CLASS variable — shared by ALL objects
 
-    def __init__(self, tea_type, sugar, milk):
-        self.tea_type = tea_type
-        self.sugar    = sugar
-        self.milk     = milk
-        Tea.total_cups += 1            # every new cup increments shop counter
+# ═══════════════════════════════════════════════════════════════
+# PART 1: OBJECT LIFECYCLE DUNDERS
+# ═══════════════════════════════════════════════════════════════
 
-    # ── DUNDER: human-readable string (print / str()) ───────
-    # Like the label written on your cup
+class Book:
+    total_books = 0                         # class variable
+
+    def __init__(self, title, author, pages):
+        """Called when object is created."""
+        self.title  = title
+        self.author = author
+        self.pages  = pages
+        Book.total_books += 1
+
+    def __del__(self):
+        """Called when object is garbage collected."""
+        Book.total_books -= 1
+        # print(f'Book "{self.title}" deleted')  # uncomment to see
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 2: STRING REPRESENTATION DUNDERS
+# ═══════════════════════════════════════════════════════════════
+#
+#   __str__  → called by print() and str()  → for end users
+#   __repr__ → called by repr() and in REPL → for developers
+#
+# RULE: __repr__ should ideally return a string that can
+#       recreate the object: eval(repr(obj)) == obj
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
     def __str__(self):
-        milk_str = "with milk" if self.milk else "no milk"
-        return f"{self.tea_type} Tea | sugar: {self.sugar} | {milk_str}"
+        return f'({self.x}, {self.y})'          # human-friendly
 
-    # ── DUNDER: developer/debug string (repr()) ─────────────
-    # Like the internal order ticket in the kitchen
     def __repr__(self):
-        return f"Tea('{self.tea_type}', sugar={self.sugar}, milk={self.milk})"
+        return f'Point({self.x!r}, {self.y!r})' # developer-friendly
 
-    # ── DUNDER: equality check ───────────────────────────────
-    # Two cups are "equal" if same type, sugar, milk
-    def __eq__(self, other):
-        return (self.tea_type == other.tea_type and
-                self.sugar    == other.sugar    and
-                self.milk     == other.milk)
+    def __format__(self, spec):
+        """Called by format() and f-strings with format spec."""
+        if spec == 'polar':
+            r     = (self.x**2 + self.y**2) ** 0.5
+            theta = __import__('math').atan2(self.y, self.x)
+            return f'r={r:.2f}, θ={theta:.2f}'
+        return f'({self.x:{spec}}, {self.y:{spec}})'
 
-    # ── DUNDER: blend two teas (+ operator) ─────────────────
-    # cup1 + cup2 → a new blended tea
+
+p = Point(3, 4)
+print(p)                    # (3, 4)          ← __str__
+print(repr(p))              # Point(3, 4)     ← __repr__
+print(f'{p}')               # (3, 4)          ← __str__
+print(f'{p:.2f}')           # (3.00, 4.00)    ← __format__
+print(f'{p:polar}')         # r=5.00, θ=0.93  ← __format__
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 3: COMPARISON DUNDERS
+# ═══════════════════════════════════════════════════════════════
+
+from functools import total_ordering
+
+@total_ordering                             # auto-generates missing comparisons
+class Temperature:
+    def __init__(self, celsius):
+        self.celsius = celsius
+
+    def __eq__(self, other):                # ==
+        if not isinstance(other, Temperature):
+            return NotImplemented
+        return self.celsius == other.celsius
+
+    def __lt__(self, other):                # <  (total_ordering generates >, <=, >=)
+        if not isinstance(other, Temperature):
+            return NotImplemented
+        return self.celsius < other.celsius
+
+    def __str__(self):
+        return f'{self.celsius}°C'
+
+    def __repr__(self):
+        return f'Temperature({self.celsius})'
+
+
+t1 = Temperature(100)
+t2 = Temperature(0)
+t3 = Temperature(100)
+
+print(t1 == t3)     # True
+print(t1 > t2)      # True   ← generated by @total_ordering
+print(t2 < t1)      # True
+print(t1 >= t3)     # True
+
+temps = [Temperature(37), Temperature(0), Temperature(100), Temperature(20)]
+print(sorted(temps))                        # sorted uses __lt__
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 4: CONTAINER DUNDERS
+# ═══════════════════════════════════════════════════════════════
+#
+# Make your class behave like a list, dict, or set
+
+class Playlist:
+    def __init__(self, name):
+        self.name   = name
+        self._songs = []
+
+    def add(self, song):
+        self._songs.append(song)
+
+    def __len__(self):                      # len(playlist)
+        return len(self._songs)
+
+    def __getitem__(self, index):           # playlist[0], playlist[1:3]
+        return self._songs[index]
+
+    def __setitem__(self, index, value):    # playlist[0] = 'new song'
+        self._songs[index] = value
+
+    def __delitem__(self, index):           # del playlist[0]
+        del self._songs[index]
+
+    def __contains__(self, song):           # 'song' in playlist
+        return song in self._songs
+
+    def __iter__(self):                     # for song in playlist
+        return iter(self._songs)
+
+    def __reversed__(self):                 # reversed(playlist)
+        return reversed(self._songs)
+
+    def __str__(self):
+        return f'Playlist({self.name}): {self._songs}'
+
+
+pl = Playlist('Chill Vibes')
+pl.add('Song A')
+pl.add('Song B')
+pl.add('Song C')
+
+print(len(pl))              # 3
+print(pl[0])                # Song A
+print(pl[1:3])              # ['Song B', 'Song C']
+print('Song B' in pl)       # True
+print('Song Z' in pl)       # False
+
+for song in pl:             # __iter__
+    print(song)
+
+pl[0] = 'New Song A'        # __setitem__
+del pl[2]                   # __delitem__
+print(pl)
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 5: NUMERIC DUNDERS
+# ═══════════════════════════════════════════════════════════════
+
+class Fraction:
+    def __init__(self, num, den):
+        from math import gcd
+        g         = gcd(abs(num), abs(den))
+        self.num  = num // g
+        self.den  = den // g
+
     def __add__(self, other):
-        blended_type = f"{self.tea_type}-{other.tea_type} Blend"
-        avg_sugar    = (self.sugar + other.sugar) // 2
-        return Tea(blended_type, avg_sugar, self.milk or other.milk)
+        return Fraction(self.num * other.den + other.num * self.den,
+                        self.den * other.den)
 
-    # ── CLASS METHOD ────────────────────────────────────────
-    # Acts on the CLASS itself, not a specific object
-    # Like the shop manager checking total cups made today
+    def __sub__(self, other):
+        return Fraction(self.num * other.den - other.num * self.den,
+                        self.den * other.den)
+
+    def __mul__(self, other):
+        return Fraction(self.num * other.num, self.den * other.den)
+
+    def __truediv__(self, other):
+        return Fraction(self.num * other.den, self.den * other.num)
+
+    def __eq__(self, other):
+        return self.num == other.num and self.den == other.den
+
+    def __float__(self):                    # float(fraction)
+        return self.num / self.den
+
+    def __int__(self):                      # int(fraction)
+        return self.num // self.den
+
+    def __bool__(self):                     # bool(fraction) — False if 0
+        return self.num != 0
+
+    def __str__(self):
+        return f'{self.num}/{self.den}'
+
+    def __repr__(self):
+        return f'Fraction({self.num}, {self.den})'
+
+
+a = Fraction(1, 2)
+b = Fraction(1, 3)
+
+print(a + b)        # 5/6
+print(a - b)        # 1/6
+print(a * b)        # 1/6
+print(a / b)        # 3/2
+print(float(a))     # 0.5
+print(int(a))       # 0
+print(bool(a))      # True
+print(bool(Fraction(0, 1)))  # False
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 6: CONTEXT MANAGER DUNDERS
+# ═══════════════════════════════════════════════════════════════
+#
+# __enter__ and __exit__ make your class work with `with` statement
+
+class DatabaseConnection:
+    def __init__(self, db_name):
+        self.db_name    = db_name
+        self.connection = None
+
+    def __enter__(self):
+        print(f'Connecting to {self.db_name}...')
+        self.connection = f'conn:{self.db_name}'
+        return self                         # returned as `as` variable
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f'Closing connection to {self.db_name}')
+        self.connection = None
+        if exc_type:
+            print(f'Exception handled: {exc_val}')
+        return False                        # False = don't suppress exceptions
+
+    def query(self, sql):
+        print(f'[{self.db_name}] Running: {sql}')
+
+
+with DatabaseConnection('users_db') as db:
+    db.query('SELECT * FROM users')
+    db.query('SELECT * FROM orders')
+# connection automatically closed after with block
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 7: CLASS METHODS & STATIC METHODS
+# ═══════════════════════════════════════════════════════════════
+
+class Employee:
+    company     = 'TechCorp'
+    _headcount  = 0
+
+    def __init__(self, name, role, salary):
+        self.name   = name
+        self.role   = role
+        self.salary = salary
+        Employee._headcount += 1
+
+    # ── instance method — works on one object ────────────────
+    def give_raise(self, amount):
+        self.salary += amount
+        print(f'{self.name} got a raise. New salary: {self.salary}')
+
+    # ── class method — works on the class itself ─────────────
+    # receives cls (the class) not self (the instance)
+    # USE FOR: factory methods, class-level operations
     @classmethod
-    def get_total_cups(cls):
-        return f"Total cups made today: {cls.total_cups}"
+    def get_headcount(cls):
+        return cls._headcount
 
-    # Alternative constructor — create Tea from a string "Masala,2,True"
     @classmethod
-    def from_string(cls, tea_string):
-        tea_type, sugar, milk = tea_string.split(",")
-        return cls(tea_type, int(sugar), milk.strip() == "True")
+    def from_dict(cls, data):               # alternative constructor
+        return cls(data['name'], data['role'], data['salary'])
 
-    # ── STATIC METHOD ───────────────────────────────────────
-    # General tea knowledge — doesn't need self or cls
-    # Like a tea fact board in the shop — no specific cup needed
+    @classmethod
+    def from_string(cls, s):                # alternative constructor
+        name, role, salary = s.split(',')
+        return cls(name.strip(), role.strip(), int(salary.strip()))
+
+    # ── static method — utility, no self or cls ──────────────
+    # USE FOR: helper functions related to the class but not needing state
     @staticmethod
-    def ideal_temperature(tea_type):
-        temps = {
-            "Green":  "75–80°C  (don't boil — ruins the taste)",
-            "Black":  "90–95°C",
-            "Masala": "90–95°C  (needs full boil for spices)",
-            "White":  "70–75°C  (most delicate)",
-        }
-        return temps.get(tea_type, "85°C (general default)")
+    def is_valid_salary(salary):
+        return 0 < salary < 10_000_000
+
+    @staticmethod
+    def format_currency(amount):
+        return f'${amount:,.2f}'
+
+    def __str__(self):
+        return f'{self.name} ({self.role}) — {self.format_currency(self.salary)}'
+
+    def __repr__(self):
+        return f'Employee({self.name!r}, {self.role!r}, {self.salary})'
 
 
-# ── USAGE ───────────────────────────────────────────────────
-cup1 = Tea("Masala", 2, True)
-cup2 = Tea("Green",  0, False)
-cup3 = Tea("Masala", 2, True)
+# instance method
+e1 = Employee('Alice', 'Engineer', 90000)
+e1.give_raise(5000)
 
-print(cup1)                            # __str__  → readable label
-print(repr(cup1))                      # __repr__ → debug info
+# class method — called on class, not instance
+e2 = Employee.from_dict({'name': 'Bob', 'role': 'Designer', 'salary': 75000})
+e3 = Employee.from_string('Carol, Manager, 95000')
+print(Employee.get_headcount())             # 3
 
-print(cup1 == cup3)                    # True  — same recipe
-print(cup1 == cup2)                    # False — different
+# static method — called on class, no instance needed
+print(Employee.is_valid_salary(50000))      # True
+print(Employee.is_valid_salary(-100))       # False
+print(Employee.format_currency(90000))      # $90,000.00
 
-blend = cup1 + cup2                    # __add__
-print(blend)                           # Masala-Green Blend
+print(e1)
+print(e2)
+print(e3)
 
-print(Tea.get_total_cups())            # classmethod — 3 cups made
 
-cup4 = Tea.from_string("Ginger, 1, True")   # alternative constructor
-print(cup4)
+# ═══════════════════════════════════════════════════════════════
+# PART 8: __slots__ — MEMORY OPTIMIZATION
+# ═══════════════════════════════════════════════════════════════
+#
+# By default, Python stores instance attributes in a __dict__.
+# __slots__ replaces __dict__ with a fixed set of attributes.
+# Result: less memory, faster attribute access.
+#
+# USE WHEN: creating millions of small objects (e.g. game entities, data rows)
 
-print(Tea.ideal_temperature("Green"))  # staticmethod — no object needed
-print(Tea.ideal_temperature("Masala"))
+class Point2D:
+    __slots__ = ('x', 'y')              # only these attributes allowed
 
-# ── KEY POINTS ──────────────────────────────────────────────
-# __str__      → called by print() and str()   — for humans
-# __repr__     → called by repr()              — for developers
-# __eq__       → called by ==                  — custom equality
-# __add__      → called by +                   — custom operator
-# @classmethod → receives cls, works on class  — factory methods
-# @staticmethod→ no self/cls, pure utility     — helper functions
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f'Point2D({self.x}, {self.y})'
+
+
+p = Point2D(1, 2)
+print(p.x, p.y)
+# p.z = 3           # AttributeError — z not in __slots__
+# print(p.__dict__) # AttributeError — no __dict__ with __slots__
+
+import sys
+class WithDict:
+    def __init__(self, x, y): self.x = x; self.y = y
+
+class WithSlots:
+    __slots__ = ('x', 'y')
+    def __init__(self, x, y): self.x = x; self.y = y
+
+print(sys.getsizeof(WithDict(1, 2)))    # ~48 bytes + dict overhead
+print(sys.getsizeof(WithSlots(1, 2)))   # ~56 bytes (no dict)
+
+
+# ═══════════════════════════════════════════════════════════════
+# QUICK REFERENCE — DUNDER CHEAT SHEET
+# ═══════════════════════════════════════════════════════════════
+#
+#   LIFECYCLE:    __init__  __del__
+#   STRING:       __str__   __repr__   __format__
+#   COMPARISON:   __eq__    __ne__     __lt__  __gt__  __le__  __ge__
+#   MATH:         __add__   __sub__    __mul__ __truediv__ __mod__ __pow__
+#   REVERSE MATH: __radd__  __rsub__   __rmul__  (for 3 + obj)
+#   IN-PLACE:     __iadd__  __isub__   __imul__  (for +=, -=)
+#   UNARY:        __neg__   __pos__    __abs__   __bool__
+#   CONTAINER:    __len__   __getitem__ __setitem__ __delitem__ __contains__ __iter__
+#   CONTEXT MGR:  __enter__ __exit__
+#   CALLABLE:     __call__  (makes instance callable like a function)
+#   HASHING:      __hash__  (needed if __eq__ is defined)
+#
+#   @classmethod  → receives cls, factory methods, class-level ops
+#   @staticmethod → no self/cls, pure utility helpers
+#   __slots__     → memory optimization, fixed attribute set
