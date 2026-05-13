@@ -249,7 +249,7 @@ print(list(chain([1, 2], [3, 4], [5])))   # [1, 2, 3, 4, 5]
 #   Use when         complex logic        simple sequences
 #
 # ─────────────────────────────────────────────────────────────
-# PART 9: BUILT-IN ITERATORS (pythonic tools)
+# PART 9: BUILT-  IN ITERATORS (pythonic tools)
 # ─────────────────────────────────────────────────────────────
 
 from itertools import islice, chain as ichain, count, cycle, takewhile
