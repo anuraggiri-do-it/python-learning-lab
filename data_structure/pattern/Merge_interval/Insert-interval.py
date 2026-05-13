@@ -30,7 +30,7 @@
 #             merged:   |--------|
 #
 # After the loop, always append [start, end] because the last
-# interval (or the newInterval itself) is never added inside loop.
+# interval  (or the newInterval itself)     is never added inside loop.
 
 class Solution:
     def insert(self, intervals, newInterval):
