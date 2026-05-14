@@ -72,7 +72,7 @@ print(now)               # current date and time
 #      b. PYTHONPATH env variable
 #      c. standard library
 #      d. site-packages (pip installed packages)
-#
+#        
 # ANALOGY: Finding a book in a library 📚
 #   1. Check your desk (cache)
 #   2. Check built-in shelf (standard library)
