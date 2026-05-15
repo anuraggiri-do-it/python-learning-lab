@@ -1,81 +1,294 @@
-# ============================================================
-# OOP 3 — Encapsulation
-# ============================================================
-# ANALOGY: THE TEA MACHINE (you press a button, you don't see inside)
+# ═══════════════════════════════════════════════════════════════
+#         OOP — ENCAPSULATION
+# ═══════════════════════════════════════════════════════════════
 #
-#   When you use a tea vending machine:
-#   → You press "Masala Tea" button
-#   → You don't see the internal boiler temperature, pipe pressure etc.
-#   → The machine HIDES its internal details from you
-#   → You only interact through the BUTTONS (public interface)
+# WHAT IS ENCAPSULATION?
+# ─────────────────────────────────────────────────────────────
+# Encapsulation = bundling data (attributes) + behaviour (methods)
+# into one unit (class), AND controlling access to internal details.
 #
-#   Encapsulation = bundling data + methods together
-#                 + HIDING internal details from outside
+# TWO IDEAS IN ONE:
+#   1. Bundling   → data and methods live together in a class
+#   2. Hiding     → internal state is protected from outside misuse
 #
-#   PUBLIC    (name)    → anyone can access
-#   PROTECTED (_name)   → meant for internal/subclass use (convention)
-#   PRIVATE   (__name)  → strictly internal, name-mangled by Python
+# ANALOGY: Capsule pill 💊
+#   The medicine (data) is sealed inside the capsule (class).
+#   You swallow the capsule — you don't touch the medicine directly.
+#   The capsule controls HOW the medicine is released.
 #
-# ============================================================
+# ACCESS LEVELS IN PYTHON:
+#   public    →  name       → accessible everywhere
+#   protected →  _name      → convention: "internal use" hint
+#   private   →  __name     → name-mangled: _ClassName__name
 
-class TeaMachine:
-    def __init__(self):
-        self.brand          = "ChaiBoss"    # public   — anyone can read
-        self._water_level   = 500           # protected — internal use
-        self.__boiler_temp  = 95            # private   — hidden completely
 
-    # ── PUBLIC METHOD (the button you press) ────────────────
-    def make_tea(self, tea_type):
-        if self.__is_water_enough():         # uses private method internally
-            self.__heat_water()              # uses private method internally
-            print(f"Here is your {tea_type} tea! ☕")
-        else:
-            print("Not enough water! Please refill.")
+# ═══════════════════════════════════════════════════════════════
+# PART 1: ACCESS MODIFIERS
+# ═══════════════════════════════════════════════════════════════
 
-    def refill_water(self, amount):
-        self._water_level += amount
-        print(f"Water refilled. Level: {self._water_level}ml")
+class Employee:
+    company = 'TechCorp'                    # public class variable
 
-    # ── PRIVATE METHODS (internal machine logic — hidden) ───
-    def __heat_water(self):
-        print(f"[Internal] Heating water to {self.__boiler_temp}°C")
+    def __init__(self, name, salary, ssn):
+        self.name      = name               # public   — anyone can read/write
+        self._salary   = salary             # protected — internal use hint
+        self.__ssn     = ssn                # private  — name-mangled
 
-    def __is_water_enough(self):
-        return self._water_level >= 150
+    def get_details(self):                  # public method
+        return f'{self.name} at {self.company}'
 
-    # ── GETTER / SETTER (controlled access to private data) ─
-    # Instead of directly accessing __boiler_temp,
-    # we provide a controlled way to read/change it
+    def _calculate_tax(self):               # protected method — internal
+        return self._salary * 0.2
+
+    def __validate_ssn(self):               # private method
+        return len(str(self.__ssn)) == 9
+
+    def summary(self):
+        tax   = self._calculate_tax()
+        valid = self.__validate_ssn()
+        return f'{self.name} | Tax: ${tax:.0f} | SSN valid: {valid}'
+
+
+emp = Employee('Alice', 90000, 123456789)
+
+print(emp.name)             # Alice        ← public, direct access OK
+print(emp._salary)          # 90000        ← works but convention says don't
+# print(emp.__ssn)          # AttributeError ← private, blocked
+
+# name mangling — Python renames __ssn to _Employee__ssn
+print(emp._Employee__ssn)   # 123456789    ← accessible but strongly discouraged
+print(emp.summary())
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 2: @property — CONTROLLED ATTRIBUTE ACCESS
+# ═══════════════════════════════════════════════════════════════
+#
+# @property = getter that looks like an attribute
+# @x.setter = setter with validation
+# @x.deleter = called on del obj.x
+#
+# ANALOGY: Smart lock 🔐
+#   You can read the lock status (getter)
+#   You can set a new code only if it meets rules (setter)
+#   You can't bypass the rules by accessing internals directly
+
+class BankAccount:
+    def __init__(self, owner, balance=0):
+        self._owner   = owner
+        self.__balance = balance
+        self.__transactions = []
+
     @property
-    def boiler_temp(self):
-        return self.__boiler_temp            # read allowed
+    def owner(self):                        # read-only property (no setter)
+        return self._owner
 
-    @boiler_temp.setter
-    def boiler_temp(self, temp):
-        if 60 <= temp <= 100:                # validation before setting
-            self.__boiler_temp = temp
-            print(f"Boiler temp set to {temp}°C")
+    @property
+    def balance(self):
+        return self.__balance
+
+    @balance.setter
+    def balance(self, amount):              # validated setter
+        if not isinstance(amount, (int, float)):
+            raise TypeError('Balance must be a number')
+        if amount < 0:
+            raise ValueError('Balance cannot be negative')
+        self.__balance = amount
+
+    @property
+    def transaction_count(self):            # computed property
+        return len(self.__transactions)
+
+    def deposit(self, amount):
+        if amount <= 0:
+            raise ValueError('Deposit must be positive')
+        self.__balance += amount
+        self.__transactions.append(('deposit', amount))
+        print(f'Deposited ${amount:.2f} | Balance: ${self.__balance:.2f}')
+
+    def withdraw(self, amount):
+        if amount <= 0:
+            raise ValueError('Amount must be positive')
+        if amount > self.__balance:
+            raise ValueError('Insufficient funds')
+        self.__balance -= amount
+        self.__transactions.append(('withdraw', amount))
+        print(f'Withdrew ${amount:.2f} | Balance: ${self.__balance:.2f}')
+
+    def __str__(self):
+        return f'BankAccount({self._owner}, ${self.__balance:.2f})'
+
+
+acc = BankAccount('Alice', 1000)
+acc.deposit(500)
+acc.withdraw(200)
+
+print(acc.balance)              # 1300.0   ← getter
+print(acc.owner)                # Alice    ← read-only
+print(acc.transaction_count)    # 2        ← computed
+
+try:
+    acc.balance = -500          # raises ValueError
+except ValueError as e:
+    print(e)
+
+# acc.owner = 'Bob'             # AttributeError — no setter defined
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 3: ENCAPSULATION IN INHERITANCE
+# ═══════════════════════════════════════════════════════════════
+#
+# protected (_name) → accessible in child classes (by convention)
+# private (__name)  → NOT accessible in child classes (name-mangled)
+
+class Animal:
+    def __init__(self, name, health):
+        self.name      = name               # public
+        self._health   = health             # protected — child can use
+        self.__dna     = 'ATCG...'          # private — child cannot use
+
+    def _heal(self, amount):                # protected method
+        self._health = min(100, self._health + amount)
+
+    def status(self):
+        return f'{self.name}: health={self._health}'
+
+
+class Dog(Animal):
+    def __init__(self, name, health, breed):
+        super().__init__(name, health)
+        self.breed = breed
+
+    def eat(self, food):
+        print(f'{self.name} eats {food}')
+        self._heal(10)                      # can access protected method ✅
+        # self.__dna                        # AttributeError — private blocked ❌
+
+    def status(self):
+        return f'{super().status()} | breed={self.breed}'
+
+
+dog = Dog('Rex', 70, 'Labrador')
+dog.eat('bone')
+print(dog.status())             # Rex: health=80 | breed=Labrador
+print(dog._health)              # 80  ← accessible (protected)
+
+
+# ═══════════════════════════════════════════════════════════════
+# PART 4: REAL-WORLD EXAMPLE — User Account
+# ═══════════════════════════════════════════════════════════════
+
+import hashlib
+
+class UserAccount:
+    _active_users = 0
+
+    def __init__(self, username, email, password):
+        self.username   = username
+        self._email     = email
+        self.__password = self.__hash(password)  # never store plain text
+        self.__locked   = False
+        self.__attempts = 0
+        UserAccount._active_users += 1
+
+    @staticmethod
+    def __hash(password):
+        return hashlib.sha256(password.encode()).hexdigest()
+
+    @property
+    def email(self):
+        return self._email
+
+    @email.setter
+    def email(self, value):
+        if '@' not in value or '.' not in value:
+            raise ValueError('Invalid email address')
+        self._email = value
+
+    @property
+    def is_locked(self):
+        return self.__locked
+
+    def login(self, password):
+        if self.__locked:
+            print('Account locked. Contact support.')
+            return False
+        if self.__hash(password) == self.__password:
+            self.__attempts = 0
+            print(f'Welcome, {self.username}!')
+            return True
+        self.__attempts += 1
+        if self.__attempts >= 3:
+            self.__locked = True
+            print('Too many failed attempts. Account locked.')
         else:
-            print("Invalid temp! Must be between 60–100°C")
+            print(f'Wrong password. {3 - self.__attempts} attempt(s) left.')
+        return False
+
+    def change_password(self, old_pw, new_pw):
+        if self.__hash(old_pw) != self.__password:
+            raise ValueError('Current password is incorrect')
+        if len(new_pw) < 8:
+            raise ValueError('New password must be at least 8 characters')
+        self.__password = self.__hash(new_pw)
+        print('Password changed successfully')
+
+    @classmethod
+    def get_active_users(cls):
+        return cls._active_users
+
+    def __str__(self):
+        status = 'locked' if self.__locked else 'active'
+        return f'User({self.username}, {self._email}, {status})'
 
 
-# ── USAGE ───────────────────────────────────────────────────
-machine = TeaMachine()
+user = UserAccount('alice', 'alice@example.com', 'secret123')
+user.login('wrongpass')
+user.login('wrongpass')
+user.login('wrongpass')         # locks account
+user.login('secret123')         # locked — can't login
 
-machine.make_tea("Masala")           # public interface — works fine
-machine.refill_water(200)
+user2 = UserAccount('bob', 'bob@example.com', 'pass1234')
+user2.login('pass1234')
+user2.change_password('pass1234', 'newpass99')
 
-print(machine.brand)                 # public — accessible ✅
-print(machine.boiler_temp)           # via property getter ✅
+print(UserAccount.get_active_users())   # 2
+print(user)
+print(user2)
 
-machine.boiler_temp = 85             # via setter with validation ✅
-machine.boiler_temp = 200            # rejected — out of range ❌
 
-# print(machine.__boiler_temp)       # ❌ AttributeError — private!
+# ═══════════════════════════════════════════════════════════════
+# PART 5: ENCAPSULATION vs ABSTRACTION
+# ═══════════════════════════════════════════════════════════════
+#
+#   Encapsulation = HIDING DATA
+#     → private/protected attributes
+#     → @property for controlled access
+#     → prevents direct manipulation of internal state
+#
+#   Abstraction = HIDING IMPLEMENTATION
+#     → abstract methods (ABC)
+#     → shows WHAT to do, hides HOW it's done
+#     → user calls login() without knowing the hashing logic
+#
+#   They work TOGETHER:
+#     Abstraction  → defines the interface (what methods exist)
+#     Encapsulation → protects the data behind that interface
 
-# ── KEY POINTS ──────────────────────────────────────────────
-# 1. Public    (name)   → accessible everywhere
-# 2. Protected (_name)  → convention only, still accessible
-# 3. Private   (__name) → Python name-mangles it → _ClassName__name
-# 4. Use @property for controlled read access
-# 5. Use @setter for controlled write access with validation
+
+# ═══════════════════════════════════════════════════════════════
+# QUICK REFERENCE
+# ═══════════════════════════════════════════════════════════════
+#
+#   self.name      → public    — accessible anywhere
+#   self._name     → protected — convention: internal/subclass only
+#   self.__name    → private   — name-mangled to _ClassName__name
+#
+#   @property      → getter (read as attribute)
+#   @x.setter      → setter with validation
+#   @x.deleter     → called on del obj.x
+#
+#   Name mangling:
+#     self.__x inside class Foo → stored as _Foo__x
+#     obj._Foo__x               → still accessible (but don't!)
