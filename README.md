@@ -159,7 +159,17 @@ python-learning-lab/
 <br/>
 
 <!-- AUTO:two-pointer -->
-_No files yet — coming soon._
+| # | File |
+|---|---|
+| 1 | `_intro.py` |
+| 2 | `container_with_water.py` |
+| 3 | `palindrome.py` |
+| 4 | `remove_duplicates.py` |
+| 5 | `squaring_sorted_array.py` |
+| 6 | `triplet_sum_zero.py` |
+| 7 | `two_sum_sorted.py` |
+
+> **7 problems**
 <!-- END:two-pointer -->
 
 </details>
@@ -248,7 +258,7 @@ _No files yet._
 | Slow & Fast Pointer | 8 | ✅ Complete (8 files) |
 | Kadane's Algorithm | 4 | ✅ Complete (4 files) |
 | Prefix Sum | 3 | ✅ Complete (3 files) |
-| Two Pointer | 0 | ⬜ Not Started |
+| Two Pointer | 7 | 🔄 In Progress |
 | Algorithms | 0 | ⬜ Not Started |
 | Python Core | 7 | ✅ Complete (7 files) |
 | OOP | 6 | ✅ Complete (6 files) |
