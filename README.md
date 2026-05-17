@@ -267,7 +267,7 @@ _No files yet._
 | Error Handling | 1 | ✅ Complete (1 files) |
 | Data Analysis | 1 | ✅ Complete (1 files) |
 | Numerical Computing | 1 | ✅ Complete (1 files) |
-| Visualization | 5 | ✅ Complete (5 files) |
+| Visualization | 6 | ✅ Complete (6 files) |
 <!-- END:progress -->
 
 ---
