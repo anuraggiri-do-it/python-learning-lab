@@ -212,7 +212,14 @@ python-learning-lab/
 ## 🤖 Gen AI with LangChain
 
 <!-- AUTO:genai -->
-_No files yet._
+| Module | Files |
+|---|---|
+| **Chat Models** | _empty_ |
+| **Embedded Models** | _empty_ |
+| **LLMs** | _empty_ |
+| **Prompts** | _empty_ |
+| **Basic** | _empty_ |
+| **Structured Output** | _empty_ |
 <!-- END:genai -->
 
 > Running a **local LLM** (llama3.2:1b via Ollama) + **HuggingFace embeddings** — no API keys needed.
@@ -257,7 +264,7 @@ _No files yet._
 | Sliding Window | 10 | ✅ Complete (10 files) |
 | Slow & Fast Pointer | 8 | ✅ Complete (8 files) |
 | Kadane's Algorithm | 4 | ✅ Complete (4 files) |
-| Prefix Sum | 3 | ✅ Complete (3 files) |
+| Prefix Sum | 4 | ✅ Complete (4 files) |
 | Two Pointer | 7 | 🔄 In Progress |
 | Algorithms | 0 | ⬜ Not Started |
 | Python Core | 7 | ✅ Complete (7 files) |
@@ -267,7 +274,7 @@ _No files yet._
 | Error Handling | 1 | ✅ Complete (1 files) |
 | Data Analysis | 1 | ✅ Complete (1 files) |
 | Numerical Computing | 1 | ✅ Complete (1 files) |
-| Visualization | 5 | ✅ Complete (5 files) |
+| Visualization | 10 | ✅ Complete (10 files) |
 <!-- END:progress -->
 
 ---
