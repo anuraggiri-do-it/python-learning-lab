@@ -274,7 +274,7 @@ python-learning-lab/
 | Error Handling | 1 | ✅ Complete (1 files) |
 | Data Analysis | 1 | ✅ Complete (1 files) |
 | Numerical Computing | 1 | ✅ Complete (1 files) |
-| Visualization | 12 | ✅ Complete (12 files) |
+| Visualization | 16 | ✅ Complete (16 files) |
 <!-- END:progress -->
 
 ---
